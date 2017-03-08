@@ -93,5 +93,10 @@ object PureFunctional {
     printResult(names.reduceLeft(largestName))
 
     println(formatResult("fibTailRec", 5,fibTailRec))
+
+    //Anonymous function absurd sample
+    val numbers = List(1,4,3,5,6,7)
+    printResult(numbers.reduce(_*_+1))
+
   }
 }
