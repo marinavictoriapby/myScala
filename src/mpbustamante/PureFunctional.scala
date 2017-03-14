@@ -85,6 +85,38 @@ object PureFunctional {
     fibTailRecHelper(pos)
   }
 
+  def upward(a: Int, b: Int) : Boolean = a < b
+
+  /**
+    * Exercise 2.2
+    * This is a polymorphic function that has a tailrec inside
+    * @param as the array
+    * @param ordered the ordering function
+    * @tparam A the type
+    * @return
+    */
+  def isSorted[A](as: Array[A], ordered: (A,A) => Boolean) : Boolean = {
+    @tailrec def isSortedHelper(elem: A, as: Array[A], ordered: (A,A) => Boolean) : Boolean = {
+      if (!as.isEmpty) {
+        if (as.length > 2)
+          ordered(elem, as.head) && isSortedHelper(as.head, as.tail, ordered)
+        else
+          ordered(elem, as.head)
+      }
+      else false
+    }
+
+    if (!as.isEmpty)
+      isSortedHelper(as.head, as.tail, ordered)
+    else
+      false
+
+  }
+
+  val functionAsValue = new Function2[Int, Int, Boolean] {
+    def apply(a: Int, b: Int) = a < b
+  }
+
   /** MAIN **/
   def main(args: Array[String]): Unit = {
     printResult(myPureFunction(1))
@@ -98,5 +130,9 @@ object PureFunctional {
     val numbers = List(1,4,3,5,6,7)
     printResult(numbers.reduce(_*_+1))
 
+    printResult(isSorted(Array(1,2,3,4,5), upward))
+
+    //This is a call to apply for this function defined as value
+    functionAsValue.apply(1,2)
   }
 }
